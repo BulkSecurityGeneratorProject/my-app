@@ -1,0 +1,5 @@
+applications:
+- name: my-app
+  timeout: 180
+  routes:
+  - route: my-app.cfapps.io

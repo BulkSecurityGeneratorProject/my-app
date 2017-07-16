@@ -5,7 +5,7 @@ services:
         # volumes:
         #     - ~/volumes/jhipster/MyApp/postgresql/:/var/lib/postgresql/data/
         environment:
-            - POSTGRES_USER=postgres
-            - POSTGRES_PASSWORD=admin
+            - POSTGRES_USER=MyApp
+            - POSTGRES_PASSWORD=
         ports:
             - 5432:5432

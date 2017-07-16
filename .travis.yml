@@ -1,41 +1,51 @@
 os:
-  - linux
+- linux
 services:
-  - docker
+- docker
 language: node_js
 node_js:
-  - "6.11.0"
+- 6.11.0
 jdk:
-  - oraclejdk8
+- oraclejdk8
 sudo: false
 cache:
   directories:
-    - node
-    - node_modules
-    - $HOME/.m2
-    - $HOME/.yarn-cache
+  - node
+  - node_modules
+  - "$HOME/.m2"
+  - "$HOME/.yarn-cache"
 env:
   global:
-    - NODE_VERSION=6.11.0
-    - SPRING_OUTPUT_ANSI_ENABLED=ALWAYS
-    - SPRING_JPA_SHOW_SQL=false
+  - NODE_VERSION=6.11.0
+  - SPRING_OUTPUT_ANSI_ENABLED=ALWAYS
+  - SPRING_JPA_SHOW_SQL=false
 before_install:
-  - jdk_switcher use oraclejdk8
-  - java -version
-  - sudo /etc/init.d/mysql stop
-  - sudo /etc/init.d/postgresql stop
-  # Repo for Yarn
-  - curl -o- -L https://yarnpkg.com/install.sh | bash
-  - export PATH=$HOME/.yarn/bin:$PATH
+- jdk_switcher use oraclejdk8
+- java -version
+- sudo /etc/init.d/mysql stop
+- sudo /etc/init.d/postgresql stop
+- curl -o- -L https://yarnpkg.com/install.sh | bash
+- export PATH=$HOME/.yarn/bin:$PATH
 install:
-  - yarn install
+- yarn install
 script:
-  - chmod +x mvnw
-  - ./mvnw clean test
-  - yarn test
-  - ./mvnw package -Pprod -DskipTests
+- chmod +x mvnw
+- "./mvnw clean test"
+- yarn test
+- "./mvnw package -Pprod -DskipTests"
 notifications:
   webhooks:
-    on_success: change  # options: [always|never|change] default: always
-    on_failure: always  # options: [always|never|change] default: always
-    on_start: false     # default: false
+    on_success: change
+    on_failure: always
+    on_start: false
+deploy:
+  provider: cloudfoundry
+  username:
+    secure: CCVocyzpo5FwPDWh1omGUwCRW+HRQe1da+NhorK66/CChJlk2tFX3tN6mttmC5VGwyjvNVl3tkb/SWx+XJWjSL7silVfHdCEZk894fPeVXboIpQcxEyxtS2i4OnnjhC+9ABfzdnbksuOpWMgMtFIVK3eFWGv2p/SYc7JVtloyv4IgYUTeo5vSxuUhER396coezAGNHCZ1fZiVQxvHXjoLuaW0IUrKw7I4Ix6/aLnI/BgTmUWPj0DfLIH7GbokiXCL0o3YPIWBIxxSjdj9ul5jPRJ1J/makWBrh5metjWqeU4klKKUNap12mTvos05ZqbwhNZkZWEE4X080mJ3QdrkELmsurhEC/XCOMY8IPdaImPE+E9MgaAdpcywFkDOmO1M1sZqeEoI128f6pkyG8KMMv984YZJiJr8cFtFbno8xa5F6sZbnKuBSA6WnCYt+4dRNTHJGwYVO1tmEpexBCLzzjrh7E43FlR3ajZfiRwyaUm+683vLflhdXKj/hZpvM4+/QcEoCiBwfPD1obpQHdCau8mg0vaTzQV5yszMzraVxFEp6AUb73tIEW5m/vikLq7C9yZhLAl5Iymkpbc8DoLu/zlgduk1cTSmCZlS4CLwsODmGQhaVHUvJinAmS6jtmugrYARGXat+/aprpSMKdJFx/zbM9zVonMXuQnkilxDY=
+  password:
+    secure: nU0of2kIldlJlaznPZWSzWvs4p0zuHtTAIClbsj8bIt1I1MvzCKoGn1LhvOMhksTSvmr07IEgxqTmz3+3RlEHDa2KkapNjQtQupXlgSQ5OmQbbPtKQGJF/yoMAITlurT6PFaXEDWODop5YB+d2XXOAnBHCt9GNFN45o6tkljo188pb0ioEtPi8Nc/mHUCDtvrZURrTCCpD3Jo1SRs+THVEwfLTn5f1LY3lzqUPPPa6wIAh3SNDed2j4RPz334gtWzYiUZmIVouGUOSk0oHKjh6e1b3J84DVGsSmdUhkq5IlpxX7j98gkTLM4i5XnLCIRN1ogO9sIz/9ZUJsscXbBPzKed8UvzoXbYrOiT7uSR/p+d+kRJNn8BVEQJ+KRahEbG8rckOCQoAUsxleCN36lZ5YLpt97Y3qV4Cm1d8lFzel9xhBIgLPtkw5Hm9Lq+5GZDv1bQ5rCLX0t2XbSPzZdkNC9yhjYao3Bx3ksWkcPUIvrq+bMtcGe1u0aVdXHoIRQ4rgDVrhL9Jo5qMJoFDlLqMQmIFKlDJK5tZAXAJo+iByo72UKOeKtVfoQdeK6wsJsTTCXKoyhup2DQWGeDqXakJ4OZws/2Fhhhx39w2EIhRtAjDZbaIfq4EwY4q6MHG396Qrr5eg7x0jHWaYnEuwm7XW7O5b4Wtj8qpbxFZSfpwQ=
+  api: https://api.run.pivotal.io
+  organization:
+    secure: DK8PqcjcHkAE90xW5QezJBC0KV4iERgzoaKttD4m42q+8OQy8K8Yj5FCyYQQwPpFHzkuFDpB7mMfWkXa+j8H6v87i9QpwAh8H1AmofS0FMQ2F3AVLcipqrqH8pai+xghbIqGKtSTb7/qDhD0ZTenU1gCproGOmYQpRmbRLvlqMb21bJusdMBKxYdm05ghHkJZZlv/rn1vdAKrVzYK4k66jGrlHWcb7J1BHYIYTwPN1vNK7Fv2cFS8pK7Aa5neFeneDAHOzrynvIzgfJs8jcplFkHZz0+y17tBZlGyGjSIbQLeBXpsOkWBUuUj5wifEhTIlbOaDAgBJmHVg0uhjl3BJAlegA0L18P87zmebE01+Sm0y1eVqPK+HJRSk8jeRWFuTYmASUrD8m/hqOB9flnouDfknpD8nAFL9qtMEMn5JYEr1tedErcbGrLp3sLvyBQO/pEPXX/p26SpkYMDegRj3eKmOKtIELE4bySL/Ujnyt/lrM4IZXsAqjTmSx5q4RTofx29jABAbcPBMPInJysptKrjPQRt4va5Y6EJA66UDk8/m5cvlOaItdeOd+QCqUv5pwiHAKBNBnPiIvCpbvuaA5LojpCvlJlw6mlUbabUhTz4bkRcgGZIPm5h4ejVX81z+L/HOzRBj4E+DKvP4L4iM5CB1nl9or6zfU2or+Hdd8=
+  space:
+    secure: SZy6xTgvmpw09y5Y+zFGfYh8En58WYl+TSmnMQSdy83IqQcvykvEfCyv/0GU0s3uT6ihUfIkw1ulPD6Db4FNyCCtOpzjx0yPtdwp0m77F+ODW4WOyFAmYQW19msp/K07eqA8IiFZ/FI5lo/Eb29kmS2ML0R1nrtYjpVLHkErHn+cmMnmxxO8Q2knkaWl5K8Z+67hG+UUNpniZP7T9xKo+0llV7zV6iYnvWxEUDQaWMitriI5ANdz4kFhP9ZsSKtYTnzKswwdhqYAyaydha5nlcVXFBR/6D5gr64Ca3aAc5fEAPNCTJr9DFboLkXTSEuTxjPzvIhJStWfPcCtZH0jbsP9lFUdMFGCzxxTuvF1pOJNzNpEQ91GbO7Dq6nH+6kNtbdcTKu0VUAqn5SvojdCBRJkKbV8AGy3redwfnL6TcTkJ6fG0pE5/kH8FWqFlSkqcWODNMDHag0574JYWR9UswW7Kv/au6b9aNXLMOjXRORZwQd+JQfhLURCDhecfFgLZp/V/Bs43muULceKpXbu9NbnykwR1SMj8vr59U/MTLVwFDos/8FLEv15OkgNL/O/53rh9/WU/G9+oGYILjRy6W75LTSf9l8gOn4JdzfLN5TESVaYkiyveLODgzQjakFCQdMQghC47nQFCPb7wxI5YuThribY19zfw4OyFrTLyC4=

@@ -1,5 +1,10 @@
+---
 applications:
-- name: my-app
-  timeout: 180
-  routes:
-  - route: my-app.cfapps.io
+  - name: my-app
+    buildpack: java_buildpack
+    path: target/my-app-0.0.1-SNAPSHOT.war
+    routes:
+      - route: my-app.cfapps.io
+    services:
+      - PostgreSQL
+
